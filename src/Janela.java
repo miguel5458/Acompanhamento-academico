@@ -7,8 +7,7 @@
 /**
  *
  * @author miguel henrique
- * @param <t>
  */
-public interface Menu<t> {
-    void cadastrar(t o);
+public interface Janela {
+    void mostrar();
 }

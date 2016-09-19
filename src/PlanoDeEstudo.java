@@ -5,65 +5,66 @@ import javax.swing.JOptionPane;
 public class PlanoDeEstudo {
 
     ArrayList detectarMediaBaixa(ControleDeDisciplina cd) {
-
         ArrayList resultado = new ArrayList();
+        // procurar disciplinas com media baixa
+        for (int i = 0; i < cd.disciplina.size(); i++) {
+            //se há notas cadastradas  e  maior que 6 entao:
+            if ((cd.disciplina.get(i).cdn.calcMedia(cd.disciplina.get(i))!=null)
+                    && cd.disciplina.get(i).cdn.calcMedia(cd.disciplina.get(i))[0] < 6
+                    && cd.disciplina.get(i).nota.getAV1() != null
+                    && cd.disciplina.get(i).nota.getAV2() != null
+                    && cd.disciplina.get(i).nota.getAV3() != null) {
 
-        cd.disciplina.stream().filter((disciplina) -> (disciplina.ctrl.calcMedia(disciplina) < 6)).forEach((disciplina) -> {
-            resultado.add(disciplina.getNome());
-        });
+                resultado.add(i, cd.disciplina.get(i).getNome());
+            }else{
+             return null;
+            }
+        }
+        //se nao há notas abaixo da media e notas cadastradas o resultado é nulo
 
         return resultado;
     }
 
     void mostrarMediaBaixa(ControleDeDisciplina cd) {
-        boolean notaPendente = false;
+        //disciplina vazia?
         if (cd.disciplina.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "nao há disciplina cadastrada!");
-        } else {
-            for (Disciplina disciplina : cd.disciplina) {
-                if ((disciplina.nota.getAV1() == 0.0)
-                        || (disciplina.nota.getAV2() == 0.0)
-                        || (disciplina.nota.getAV3() == 0.0)) {
-                    notaPendente = true;
-                }
-            }
-            if (!detectarMediaBaixa(cd).isEmpty()) {
-                if (notaPendente == true) {
-                    JOptionPane.showMessageDialog(null, "existem notas pendentes!");
-                } else {
-                    JOptionPane.showMessageDialog(null, "a disciplina com a media menor que a meta : " + (detectarMediaBaixa(cd)));
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "todas as disciplinas acima da média!");
-            }
+            Notificacao n = new Notificacao();
+            n.DisciplinaVazia();
+        } // se nao. se nao há disciplina abaixo da media:
+        else if (detectarMediaBaixa(cd) == null) {
+             Notificacao n = new Notificacao();
+             n.AcimaDaMedia();
         }
+        //se nao, mostrar as disciplinas com media baixa.
+        else {
 
+                JOptionPane.showMessageDialog(null, "a disciplina com a media menor que a meta : " + (detectarMediaBaixa(cd)));
+
+            }
     }
 
-    void prepararHorario(ControleDeDisciplina cd) {
+
+
+void prepararHorario(ControleDeDisciplina cd) {
         String resultado = null;
-        boolean notaPendente = false;
         int j = 4;
+        //há disciplinas cadastradas?
         if (cd.disciplina.isEmpty()) {
-            resultado= "nao há disciplina fornecida!";
-        } else if (!detectarMediaBaixa(cd).isEmpty()) {
+            Notificacao n = new Notificacao();
+            n.DisciplinaVazia();
+        } 
+        // se nao. se nao há disciplina abaixo da media:
+        else if (detectarMediaBaixa(cd) == null) {
+            Notificacao n = new Notificacao();
+            n.AcimaDaMedia();
+        } 
+        //se há disciplina abaixo da media: 
+        else {
             for (Disciplina disciplina : cd.disciplina) {
-                if (disciplina.nota.getAV1() > 0.0
-                        && disciplina.nota.getAV2() > 0.0
-                        && disciplina.nota.getAV3() > 0.0) {
-                    resultado = detectarMediaBaixa(cd) + " segunda às 1" + j + ":00\n";
-                    j++;
-                }else{
-                    notaPendente=true;
-                }
+                resultado = (detectarMediaBaixa(cd)) + " segunda às 1" + j + ":00\n";
             }
-        } else {
-            resultado="todas as disciplinas acima da média!";
+            JOptionPane.showMessageDialog(null, resultado);
         }
-        if (notaPendente == true) {
-            resultado = "notas pendentes!";
-        }
-        JOptionPane.showMessageDialog(null, resultado);
     }
 
 }

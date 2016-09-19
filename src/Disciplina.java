@@ -2,7 +2,7 @@ public class Disciplina {
     NotaDisciplina nota = new NotaDisciplina();
     private String nome;
     private String HorarioDeEstudo;
-    ControleDeNota ctrl = new ControleDeNota();
+    ControleDeNota cdn = new ControleDeNota();
     
     public String getNome() {
         return nome;

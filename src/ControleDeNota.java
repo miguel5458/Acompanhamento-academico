@@ -1,23 +1,30 @@
 
 
 public class ControleDeNota {
-
-    float calcMedia(Disciplina d) {
-        float media = 0;
-        if ((d.nota.getAV1() > 0) && (d.nota.getAV2() > 0) && (d.nota.getAV3() > 0)) {
-            media = (d.nota.getAV1() + 2 * d.nota.getAV2() + 3 * d.nota.getAV3()) / 6;
-        } else {
-            Excecao e = new Excecao();
-            e.Excecao1();
-            return 0;
-        }
+    
+    double[]calcMedia(Disciplina d) {
+        double []media= null;
+        //se há notas cadastradas
+        if (d.nota.getAV1()!=null && d.nota.getAV2()!=null && d.nota.getAV3()!=null) {
+            media=new double[1];
+            media[0] = d.nota.getAV1()[0] + 2 *  d.nota.getAV2()[0] + 3 * d.nota.getAV3()[0] / 6;
+        } 
+        //se nao
+        else {
+            Notificacao n=new Notificacao();
+            n.Pendente();
+           
+        }    
+            
+        
         return media;
-
     }
 
     void adicionarNota(ControleDeDisciplina cd) {
-        Menu m2=new Menu();
-        m2.menu2(cd);
+        //chama menu2
+        
+        Menu2 m2=new Menu2();
+        m2.cadastrar(cd);
          
     }
     
